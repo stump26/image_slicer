@@ -2,10 +2,9 @@ FROM node:10.16.3
 
 MAINTAINER Shawn Park <moidpg@gmail.com>
 
-RUN mkdir -p /app
-WORKDIR /app
-ADD . /app
+WORKDIR /usr/src/app
+COPY package*.json ./
 RUN npm install
+COPY . .
 EXPOSE 8888
-
-CMD [ "npm","product" ]
+CMD [ "npm", "start" ]
