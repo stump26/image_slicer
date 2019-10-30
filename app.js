@@ -1,17 +1,21 @@
+import express from "express";
+import bodyParser from "body-parser";
+import imageToSlices from "image-to-slices";
+
 let imgBucket = [];
-let app = express(); 
+let app = express();
 
-app.use(bodyParser.raw());                                                                                              
-app.use(bodyParser.json());                                                                                             
-app.use(bodyParser.urlencoded({ extended: false})); 
+app.use(bodyParser.raw());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-imageToSlices.configure({                                                                                                 
-  clipperOptions: {                                                                                                         
-    canvas: require("canvas")                                                                                             
-  }                                                                                                                     
+imageToSlices.configure({
+  clipperOptions: {
+    canvas: require("canvas")
+  }
 });
 
-init_image= async (resource) => {
+const init_image = async resource => {
   const lineXArray = [400 / 3, (400 / 3) * 2];
   const lineYArray = [400 / 3, (400 / 3) * 2];
 
@@ -30,17 +34,16 @@ init_image= async (resource) => {
     }
   );
 };
-app.post("/parse/", (req, res) => {
+app.post("/parse/", async (req, res) => {
   console.log("=====================================");
   console.log("=====================================");
   //console.log("parser_req >>", req.body);
-  const targetImage = new Buffer(req.body, "base64");
+  const targetImage = await new Buffer(req.body, "base64");
   console.log("TCL: targetImage", targetImage);
-  init_image(targetImage);
-});
-app.get("/test/"(req,res)=>{
+  await init_image(targetImage);
 
-})
+  res.end();
+});
 app.get("/img/:id", async (req, res) => {
   const { id } = req.params;
   console.log("TCL: req.params.id", req.params.id);
