@@ -34,16 +34,19 @@ const init_image = async resource => {
     }
   );
 };
+
+let tempImage;
 app.post("/parse/", async (req, res) => {
   console.log("=====================================");
   console.log("=====================================");
   //console.log("parser_req >>", req.body);
-  const targetImage = await new Buffer(req.body, "base64");
-  console.log("TCL: targetImage", targetImage);
-  await init_image(targetImage);
+  tempImage = await new Buffer(req.body, "base64");
+  console.log("TCL: targetImage", tempImage);
+  await init_image(tempImage);
 
   res.end();
 });
+
 app.get("/img/:id", async (req, res) => {
   const { id } = req.params;
   console.log("TCL: req.params.id", req.params.id);
@@ -58,6 +61,15 @@ app.get("/img/:id", async (req, res) => {
     "Content-Length": targetImage.length
   });
   res.end(targetImage);
+});
+
+app.get("/test", async (req, res) => {
+  console.log("TCL: targetImage", tempImage);
+  res.writeHead(200, {
+    "Content-Type": "image/png",
+    "Content-Length": tempImage.length
+  });
+  res.end(tempImage);
 });
 
 init_image("./assets/img/bonofriend.jpg");
