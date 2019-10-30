@@ -49,7 +49,7 @@ app.get("/img/:id", async (req, res) => {
     res.writeHead(500);
     res.end();
   }
-  var targetImage = new Buffer(imgBucket[id].slice(23), "base64");
+  var targetImage = new Buffer(imgBucket[id - 1].slice(23), "base64");
   console.log("TCL: targetImage", targetImage);
   res.writeHead(200, {
     "Content-Type": "image/png",
