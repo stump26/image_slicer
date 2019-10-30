@@ -1,13 +1,8 @@
 import express from "express";
-import bodyParser from "body-parser";
 import imageToSlices from "image-to-slices";
 
 let imgBucket = [];
 let app = express();
-
-app.use(bodyParser.raw());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
 imageToSlices.configure({
   clipperOptions: {
@@ -63,15 +58,16 @@ app.get("/img/:id", async (req, res) => {
   res.end(targetImage);
 });
 
-app.get("/test", async (req, res) => {
-  console.log("TCL: targetImage", tempImage);
-  res.writeHead(200, {
-    "Content-Type": "image/png",
-    "Content-Length": tempImage.length
-  });
-  res.end(tempImage);
-});
+app.get("/", async (req, res) => {
+  const id = Math.floor(Math.random() * 5 + 1);
 
+  init_image(`./assets/img/bonobono${id}.jpg`);
+  res.end();
+  // const picImg = require(`./assets/img/bonobono${id}.jpg`);
+  // res.send(`
+  // <img src=${picImg}/>
+  // `);
+});
 init_image("./assets/img/bonofriend.jpg");
 
 app.listen(8888, function() {
