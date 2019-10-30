@@ -42,7 +42,7 @@ app.post("/parse/", async (req, res) => {
   //console.log("parser_req >>", req.body);
   tempImage = await new Buffer(req.body, "base64");
   console.log("TCL: targetImage", tempImage);
-  await init_image(tempImage);
+  // await init_image(tempImage);
 
   res.end();
 });
